@@ -50,14 +50,14 @@ export default {
       },
       tools: [
         { name: 'Lighthouse', category: 'Barrierefreiheit', score: 82, details: 'Placeholder' },
-        { name: 'WAVE', category: 'Barrierefreiheit', score: 74, details: 'Placeholder' },
+        { name: 'IBM', category: 'Barrierefreiheit', score: 74, details: 'Placeholder' },
         { name: 'axe-core', category: 'Barrierefreiheit', score: 80, details: 'Placeholder' },
         { name: 'Pa11y', category: 'Barrierefreiheit', score: 76, details: 'Placeholder' },
         { name: 'cookiemetrix', category: 'Datenschutz', score: 50, details: 'Placeholder' },
         { name: 'PrivacySpy', category: 'Datenschutz', score: 40, details: 'Placeholder' },
         { name: 'CSP Evaluator', category: 'Sicherheit', score: 90, details: 'Placeholder' },
         { name: 'Mozilla Observatory', category: 'Sicherheit', score: 88, details: 'Placeholder' },
-        { name: 'SSL Labs', category: 'Sicherheit', score: 95, details: 'Placeholder' },
+        { name: 'SSL', category: 'Sicherheit', score: 95, details: 'Placeholder' },
       ]
     }
   }

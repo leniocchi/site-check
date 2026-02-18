@@ -8,6 +8,7 @@ const checkSSL = require('../checks/security/ssl')
 const checkLighthouse = require('../checks/accessibility/lighthouse')
 const checkAxe = require('../checks/accessibility/axe')
 const checkPa11y = require('../checks/accessibility/pa11y')
+const checkIBM = require('../checks/accessibility/codesniffer')
 
 router.get('/health', (req, res) => {
   res.json({ status: 'ok' })
@@ -21,18 +22,19 @@ router.post('/check', async (req, res) => {
   }
 
   try {
-    const [csp, observatory, ssl, lighthouse, axe, pa11y] = await Promise.all([
+    const [csp, observatory, ssl, lighthouse, axe, pa11y, ibm] = await Promise.all([
         checkCSP(url),
         checkObservatory(url),
         checkSSL(url),
         checkLighthouse(url),
         checkAxe(url),
-        checkPa11y(url)
+        checkPa11y(url),
+        checkIBM(url)
     ])
 
     res.json({
       url,
-      accessibility: { lighthouse, axe, pa11y },
+      accessibility: { lighthouse, axe, pa11y, ibm },
       privacy: {},
       security: { csp, observatory, ssl }
     })
