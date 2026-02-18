@@ -1,7 +1,6 @@
 <template>
   <v-container>
 
-    <!-- Kategorie Scores -->
     <v-row justify="center" class="mb-8">
       <v-col cols="12" sm="4" md="3">
         <DonutChart title="Barrierefreiheit" :score="scores.accessibility" />
@@ -14,7 +13,6 @@
       </v-col>
     </v-row>
 
-    <!-- Einzelne Reports -->
     <v-row justify="center">
       <v-col cols="12" md="9">
         <p class="text-h6 font-weight-bold mb-4">Detaillierte Reports</p>
@@ -39,25 +37,22 @@ export default {
   name: 'ReportView',
   components: { DonutChart, ToolAccordion },
   props: {
-    url: String
+    report: Object
   },
-  data() {
-    return {
-      scores: {
-        accessibility: 78,
-        privacy: 45,
-        security: 91
-      },
-      tools: [
-        { name: 'Lighthouse', category: 'Barrierefreiheit', score: 82, details: 'Placeholder' },
-        { name: 'IBM', category: 'Barrierefreiheit', score: 74, details: 'Placeholder' },
-        { name: 'axe-core', category: 'Barrierefreiheit', score: 80, details: 'Placeholder' },
-        { name: 'Pa11y', category: 'Barrierefreiheit', score: 76, details: 'Placeholder' },
-        { name: 'cookiemetrix', category: 'Datenschutz', score: 50, details: 'Placeholder' },
-        { name: 'PrivacySpy', category: 'Datenschutz', score: 40, details: 'Placeholder' },
-        { name: 'CSP Evaluator', category: 'Sicherheit', score: 90, details: 'Placeholder' },
-        { name: 'Mozilla Observatory', category: 'Sicherheit', score: 88, details: 'Placeholder' },
-        { name: 'SSL', category: 'Sicherheit', score: 95, details: 'Placeholder' },
+  computed: {
+    scores() {
+      return this.report.scores
+    },
+    tools() {
+      return [
+        { name: 'Lighthouse', category: 'Barrierefreiheit', score: this.report.accessibility.lighthouse.score, details: this.report.accessibility.lighthouse.details },
+        { name: 'axe-core', category: 'Barrierefreiheit', score: this.report.accessibility.axe.score, details: this.report.accessibility.axe.details },
+        { name: 'Pa11y', category: 'Barrierefreiheit', score: this.report.accessibility.pa11y.score, details: this.report.accessibility.pa11y.details },
+        { name: 'Cookies', category: 'Datenschutz', score: this.report.privacy.cookies.score, details: this.report.privacy.cookies.details },
+        { name: 'Tracker', category: 'Datenschutz', score: this.report.privacy.trackers.score, details: this.report.privacy.trackers.details },
+        { name: 'CSP', category: 'Sicherheit', score: this.report.security.csp.score, details: this.report.security.csp.message },
+        { name: 'Mozilla Observatory', category: 'Sicherheit', score: this.report.security.observatory.score, details: this.report.security.observatory.details },
+        { name: 'SSL', category: 'Sicherheit', score: this.report.security.ssl.score, details: this.report.security.ssl.details },
       ]
     }
   }

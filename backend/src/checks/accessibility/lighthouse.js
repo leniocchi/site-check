@@ -1,19 +1,17 @@
 const { default: lighthouse } = require('lighthouse')
-const puppeteer = require('puppeteer')
+const chromeLauncher = require('chrome-launcher')
 
 const checkLighthouse = async (url) => {
-  let browser
+  let chrome
   try {
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    chrome = await chromeLauncher.launch({
+      chromeFlags: ['--headless', '--no-sandbox', '--disable-setuid-sandbox']
     })
 
-    const port = new URL(browser.wsEndpoint()).port
-
     const result = await lighthouse(url, {
-      port,
+      port: chrome.port,
       output: 'json',
+      logLevel: 'error',
       onlyCategories: ['accessibility', 'performance', 'best-practices']
     })
 
@@ -33,10 +31,10 @@ const checkLighthouse = async (url) => {
       }))
 
     return {
-        score,
-        status: score >= 80 ? 'good' : score >= 50 ? 'warning' : 'error',
-        message: `Accessibility: ${accessibility} | Performance: ${performance} | Best Practices: ${bestPractices}`,
-        details: audits
+      score,
+      status: score >= 80 ? 'good' : score >= 50 ? 'warning' : 'error',
+      message: `Accessibility: ${accessibility} | Performance: ${performance} | Best Practices: ${bestPractices}`,
+      details: audits
     }
 
   } catch (error) {
@@ -48,7 +46,7 @@ const checkLighthouse = async (url) => {
       details: []
     }
   } finally {
-    if (browser) await browser.close()
+    if (chrome) await chrome.kill()
   }
 }
 

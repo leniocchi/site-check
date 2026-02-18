@@ -24,16 +24,14 @@ router.post('/check', async (req, res) => {
   }
 
   try {
-    const [csp, observatory, ssl, lighthouse, axe, pa11y, cookies, trackers] = await Promise.all([
-        checkCSP(url),
-        checkObservatory(url),
-        checkSSL(url),
-        checkLighthouse(url),
-        checkAxe(url),
-        checkPa11y(url),
-        checkCookies(url),
-        checkTrackers(url)
-    ])
+    const csp = await checkCSP(url)
+    const observatory = await checkObservatory(url)
+    const ssl = await checkSSL(url)
+    const lighthouse = await checkLighthouse(url)
+    const axe = await checkAxe(url)
+    const pa11y = await checkPa11y(url)
+    const cookies = await checkCookies(url)
+    const trackers = await checkTrackers(url)
 
     const average = (scores) => {
         const valid = scores.filter(s => s !== null && s !== undefined)

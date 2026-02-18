@@ -1,15 +1,18 @@
 const https = require('https')
+const tls = require('tls')
 
 const checkSSL = async (url) => {
   try {
     const domain = new URL(url).hostname
 
     const cert = await new Promise((resolve, reject) => {
-      const req = https.request({ host: domain, port: 443, method: 'GET' }, (res) => {
-        resolve(res.socket.getPeerCertificate())
+      const socket = tls.connect(443, domain, { servername: domain }, () => {
+        const cert = socket.getPeerCertificate()
+        socket.end()
+        resolve(cert)
       })
-      req.on('error', reject)
-      req.end()
+      socket.on('error', reject)
+      setTimeout(() => reject(new Error('Timeout')), 10000)
     })
 
     if (!cert || !cert.subject) {
