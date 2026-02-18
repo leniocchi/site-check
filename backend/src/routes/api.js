@@ -3,6 +3,7 @@ const router = express.Router()
 const checkCSP = require('../checks/security/csp')
 const checkObservatory = require('../checks/security/observatory')
 const checkSSL = require('../checks/security/ssl')
+const checkLighthouse = require('../checks/accessibility/lighthouse')
 
 router.get('/health', (req, res) => {
   res.json({ status: 'ok' })
@@ -16,15 +17,16 @@ router.post('/check', async (req, res) => {
   }
 
   try {
-    const [csp, observatory, ssl] = await Promise.all([
+    const [csp, observatory, ssl, lighthouse] = await Promise.all([
         checkCSP(url),
         checkObservatory(url),
-        checkSSL(url)
+        checkSSL(url),
+        checkLighthouse(url)
     ])
 
     res.json({
       url,
-      accessibility: {},
+      accessibility: { lighthouse },
       privacy: {},
       security: { csp, observatory, ssl }
     })
