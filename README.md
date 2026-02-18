@@ -1,6 +1,6 @@
 # Site Check
 
-A web-based analysis tool that automatically audits any public website for **accessibility**, **privacy**, and **security** issues — all in one place.
+A web-based analysis tool that automatically audits any public website for **accessibility**, **privacy** and **security** issues — all in one place.
 
 ---
 
