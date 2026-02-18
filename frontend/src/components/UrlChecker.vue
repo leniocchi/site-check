@@ -19,6 +19,7 @@
             prepend-inner-icon="mdi-web"
             variant="outlined"
             class="mb-4"
+            :disabled="loading"
           />
           <v-btn
             @click="startCheck"
@@ -27,6 +28,7 @@
             rounded="lg"
             block
             :disabled="!url"
+            :loading="loading"
           >
             Jetzt prüfen
           </v-btn>
@@ -40,6 +42,9 @@
 <script>
 export default {
     name: 'UrlChecker',
+    props: {
+      loading: Boolean
+    },
     data() {
         return {
             url: ''
