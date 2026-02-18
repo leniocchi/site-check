@@ -10,6 +10,7 @@ const checkAxe = require('../checks/accessibility/axe')
 const checkPa11y = require('../checks/accessibility/pa11y')
 
 const checkCookies = require('../checks/privacy/cookies')
+const checkTrackers = require('../checks/privacy/tracker')
 
 router.get('/health', (req, res) => {
   res.json({ status: 'ok' })
@@ -23,20 +24,21 @@ router.post('/check', async (req, res) => {
   }
 
   try {
-    const [csp, observatory, ssl, lighthouse, axe, pa11y, cookies] = await Promise.all([
+    const [csp, observatory, ssl, lighthouse, axe, pa11y, cookies, trackers] = await Promise.all([
         checkCSP(url),
         checkObservatory(url),
         checkSSL(url),
         checkLighthouse(url),
         checkAxe(url),
         checkPa11y(url),
-        checkCookies(url)
+        checkCookies(url),
+        checkTrackers(url)
     ])
 
     res.json({
       url,
       accessibility: { lighthouse, axe, pa11y },
-      privacy: { cookies },
+      privacy: { cookies, trackers },
       security: { csp, observatory, ssl }
     })
   } catch (error) {
