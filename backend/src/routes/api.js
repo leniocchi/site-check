@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const checkCSP = require('../checks/security/csp')
 
 router.get('/health', (req, res) => {
   res.json({ status: 'ok' })
@@ -13,11 +14,13 @@ router.post('/check', async (req, res) => {
   }
 
   try {
+    const csp = await checkCSP(url)
+
     res.json({
       url,
       accessibility: {},
       privacy: {},
-      security: {}
+      security: { csp }
     })
   } catch (error) {
     res.status(500).json({ error: 'Fehler beim Prüfen der URL' })
